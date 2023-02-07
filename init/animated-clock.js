@@ -45,19 +45,23 @@ let animatedClock = {
     ],
 
     // PRIVATE INITIALIZING PROPERTIES (no changes to them):
-    _hands: null,
+    _hands: {
+        hourLayer: null,
+        minuteLayer: null,
+        secondHand: null
+    },
     _currentAngles: {
         hAngle: 0,
         mAngle: 0,
-        sAngle: 0,
-    },
+        sAngle: 0
+    }
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 const getTimeObject = (milliseconds = 0, is24Houred = false) => {
 
-    const seconds = Math.trunc(milliseconds / 1000) % (is24Houred ? 86400 : 43200)
+    const seconds = Math.trunc(Math.abs(milliseconds) / 1000) % (is24Houred ? 86400 : 43200)
 
     return {
         hours: Math.floor(seconds / 3600),
@@ -66,147 +70,137 @@ const getTimeObject = (milliseconds = 0, is24Houred = false) => {
     }
 }
 
-const getNextAngles = (
-    currentAngles = {
-        hAngle: 0,
-        mAngle: 0,
-        sAngle: 0
-    },
-    transitionDuration = 0,
-    transitionDelay = 0,
-    extraRotationValues = {
-        hValue: 0,
-        mValue: 0,
-        sValue: 0
-    }
-) => {
+const getNextAngles = (currentAngles, transitionDuration = 0, transitionDelay = 0, extraRotationValues = {
+    hValue: 0,
+    mValue: 0,
+    sValue: 0
+}) => {
 
-    const relativeStopTime = getTimeObject(transitionDelay + transitionDuration)
+    const relativeStopTime = getTimeObject(Math.abs(transitionDelay) + Math.abs(transitionDuration))
 
     return {
         hAngle: // regardless of seconds
             relativeStopTime.hours * 30 + relativeStopTime.minutes * 0.5 +
             currentAngles.hAngle +
-            (extraRotationValues.hValue === undefined ? 0 : extraRotationValues.hValue) * 360,
+            (extraRotationValues.hValue || 0) * 360,
         mAngle:
             relativeStopTime.minutes * 6 + relativeStopTime.seconds * 0.1 +
             currentAngles.mAngle +
-            (extraRotationValues.mValue === undefined ? 0 : extraRotationValues.mValue) * 360,
+            (extraRotationValues.mValue || 0) * 360,
         sAngle:
             relativeStopTime.seconds * 6 +
             currentAngles.sAngle +
-            (extraRotationValues.sValue === undefined ? 0 : extraRotationValues.sValue) * 360
+            (extraRotationValues.sValue || 0) * 360
     }
 }
 
-const windHands = (
-    currentAngles,
-    transitionDuration = 2000,
-    transitionDelay,
-    extraRotationValues
-) => {
+const windHands = (clock, step = 0) => {
 
-    animatedClock._hands.hourLayer.style.transition =
-        animatedClock._hands.minuteLayer.style.transition =
-        animatedClock._hands.secondHand.style.transition = transitionDuration === 0
+    step = Math.abs(step)
+
+    let duration
+    let delay
+
+    // a.b.c?.d
+    if (!clock.transitions[step].timings) duration = delay = 0
+    else {
+        duration = Math.abs(clock.transitions[step].timings.duration) || 0
+        delay = Math.abs(clock.transitions[step].timings.delay) || 0
+    }
+
+    if (step <= 0) delay += Date.now() - (new Date().getTimezoneOffset()) * 60000
+
+    const extraRotationValues = clock.transitions[step].extraRotationValues || {
+        hValue: 0,
+        mValue: 0,
+        sValue: 0
+    }
+
+    clock._hands.hourLayer.style.transition =
+        clock._hands.minuteLayer.style.transition =
+        clock._hands.secondHand.style.transition = duration <= 0
             ? 'none'
-            : `transform ${transitionDuration}ms ease`
+            : `transform ${duration}ms ease`
 
-    const angles = getNextAngles(currentAngles, transitionDuration, transitionDelay, extraRotationValues)
+    clock._currentAngles = getNextAngles(clock._currentAngles, duration, delay, extraRotationValues)
 
-    animatedClock._hands.hourLayer.style.transform = `rotate(${angles.hAngle}deg)`
-    animatedClock._hands.minuteLayer.style.transform = `rotate(${angles.mAngle}deg)`
-    animatedClock._hands.secondHand.style.transform = `rotate(${angles.sAngle}deg)`
+    clock._hands.hourLayer.style.transform = `rotate(${clock._currentAngles.hAngle}deg)`
+    clock._hands.minuteLayer.style.transform = `rotate(${clock._currentAngles.mAngle}deg)`
+    clock._hands.secondHand.style.transform = `rotate(${clock._currentAngles.sAngle}deg)`
 
-    return angles
+    let nextDelay
+
+    // a.b.c?.d
+    if (step >= clock.transitions.length - 1 || !clock.transitions[step + 1].timings) nextDelay = 0
+    else nextDelay = clock.transitions[step + 1].timings.delay || 0
+
+    return duration + nextDelay
 }
 
-const animateHands = (currentAngles = {
-    hAngle: 0,
-    mAngle: 0,
-    sAngle: 0
-}) => {
+const animateHands = (clock) => {
 
-    animatedClock._hands.hourLayer.animate([
-        { transform: `rotate(${currentAngles.hAngle}deg)` },
-        { transform: `rotate(${currentAngles.hAngle + 360}deg)` }
+    clock._hands.hourLayer.animate([
+        { transform: `rotate(${clock._currentAngles.hAngle}deg)` },
+        { transform: `rotate(${clock._currentAngles.hAngle + 360}deg)` }
     ], {
         duration: 43200000,
         iterations: Infinity
     })
 
-    animatedClock._hands.minuteLayer.animate([
-        { transform: `rotate(${currentAngles.mAngle}deg)` },
-        { transform: `rotate(${currentAngles.mAngle + 360}deg)` }
+    clock._hands.minuteLayer.animate([
+        { transform: `rotate(${clock._currentAngles.mAngle}deg)` },
+        { transform: `rotate(${clock._currentAngles.mAngle + 360}deg)` }
     ], {
         duration: 3600000,
         iterations: Infinity
     })
 
-    animatedClock._hands.secondHand.animate([
-        { transform: `rotate(${currentAngles.sAngle}deg)` },
-        { transform: `rotate(${currentAngles.sAngle + 360}deg)` }
+    clock._hands.secondHand.animate([
+        { transform: `rotate(${clock._currentAngles.sAngle}deg)` },
+        { transform: `rotate(${clock._currentAngles.sAngle + 360}deg)` }
     ], {
         duration: 60000,
         iterations: Infinity
     })
 }
 
-const transitionUnitFabric = (duration, currentDelay, extraRotationValues, transitionUnitShot, nextDelay = 0) => {
+const transitionUnitFabric = (step, transitionUnitShot) => {
 
-    return (currentAngles) => {
-        animatedClock._currentAngles = windHands(currentAngles, duration, currentDelay, extraRotationValues)
-        setTimeout(() => transitionUnitShot(animatedClock._currentAngles), duration + nextDelay)
-    }
+    return (clock) => setTimeout(() => transitionUnitShot(clock), windHands(clock, step))
 }
 
-const startClock = () => {
+const start = (clock) => {
+
+    if (!clock || !clock._hands) return false
+
+    let transitionUnitShot = animateHands
+
+    if (clock.transitions.length === 0) {
+        clock._currentAngles = getNextAngles(clock._currentAngles, 0, Date.now() - (new Date().getTimezoneOffset()) * 60000)
+        transitionUnitShot(clock)
+    } else {
+        let startDelay
+
+        // a.b.c?.d
+        if (!clock.transitions[0].timings) startDelay = 0
+        else startDelay = clock.transitions[0].timings.delay || 0
+
+        for (let i = clock.transitions.length - 1; i >= 0; i--) {
+            transitionUnitShot = transitionUnitFabric(i, transitionUnitShot)
+        }
+
+        setTimeout(() => transitionUnitShot(clock), startDelay)
+    }
+
+    return true
+}
+
+window.addEventListener('load', () => {
 
     animatedClock._hands = {
         hourLayer: document.querySelector(`div[layer="hour"]`),
         minuteLayer: document.querySelector(`div[layer="minute"]`),
         secondHand: document.querySelector(`div[hand="second"]`)
     }
-
-    let transitionUnitShot = animateHands
-    let startDelay
-
-    if (animatedClock.transitions === undefined || animatedClock.transitions.length === 0) {
-        transitionUnitShot(animatedClock._currentAngles = getNextAngles(animatedClock._currentAngles, 0, Date.now() - (new Date().getTimezoneOffset()) * 60000))
-    } else {
-
-        for (let i = animatedClock.transitions.length - 1; i >= 0; i--) {
-
-            const duration = animatedClock.transitions[i].timings === undefined || animatedClock.transitions[i].timings.duration === undefined
-                ? 0
-                : animatedClock.transitions[i].timings.duration
-
-            let currentDelay = animatedClock.transitions[i].timings === undefined || animatedClock.transitions[i].timings.delay === undefined
-                ? 0
-                : animatedClock.transitions[i].timings.delay
-
-            if (i === 0) {
-                startDelay = currentDelay
-                currentDelay += Date.now() - (new Date().getTimezoneOffset()) * 60000
-            }
-
-            const extraRotationValues = animatedClock.transitions[i].extraRotationValues === undefined
-                ? {
-                    hValue: 0,
-                    mValue: 0,
-                    sValue: 0
-                }
-                : animatedClock.transitions[i].extraRotationValues
-
-            const nextDelay = i === animatedClock.transitions.length - 1 || animatedClock.transitions[i + 1].timings === undefined || animatedClock.transitions[i + 1].timings.delay === undefined
-                ? 0
-                : animatedClock.transitions[i + 1].timings.delay
-
-            transitionUnitShot = transitionUnitFabric(duration, currentDelay, extraRotationValues, transitionUnitShot, nextDelay)
-        }
-
-        setTimeout(() => transitionUnitShot(animatedClock._currentAngles), startDelay)
-    }
-}
-
-window.addEventListener('load', () => startClock())
+    start(animatedClock)
+})

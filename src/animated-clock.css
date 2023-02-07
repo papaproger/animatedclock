@@ -5,7 +5,7 @@
 
 /* * * * * * * * * * * * CUSTOM STYLES * * * * * * * * * * * */
 
-/* widget size, position, etc.: */
+/* widget size, position, color, etc.: */
 div[animated-clock] {
     /* supposed to be same: */
     width: 100vmin;
@@ -20,12 +20,8 @@ div[animated-clock] {
     /*border: 1px solid white;*/
     /*border-radius: 10px;*/
     /*box-shadow: 0 0 5px white;*/
-}
 
-/* widget color: */
-div[animated-clock],
-div[animated-clock] div[washer]>.nail::after {
-    background-color: rgb(12, 12, 12);
+    /*background-color: transparent;*/
 }
 
 /* main hands color: */
@@ -44,6 +40,11 @@ div[animated-clock] div[mark="t"] {
 div[animated-clock] div[mark]+div[mark],
 div[animated-clock] div[washer]>.nail::before {
     background-color: hsl(0, 0%, 90%);
+}
+
+/* nail color: */
+div[animated-clock] div[washer]>.nail::after {
+    background-color: rgb(12, 12, 12);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -5,7 +5,7 @@
   "author": "Sergey Shlyakhtin",
   "private": true,
   "scripts": {
-    "watch": "babel init -d public --plugins transform-object-rest-spread --presets env -w"
+    "watch": "babel init -d src --plugins transform-object-rest-spread --presets env -w"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
