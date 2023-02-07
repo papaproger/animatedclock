@@ -1,0 +1,55 @@
+<!--         Animated Clock, version: 1.0, XX.02.2023         -->
+<!-- Copyright © 2023 Sergey Shlyakhtin. All rights reserved. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Clock</title>
+    <link rel="stylesheet" href="../src/main.css">
+    <!-- + description, etc. -->
+
+    <!-- styles -->
+    <link rel="stylesheet" href="../src/animated-clock.css">
+    <!-- script -->
+    <script type="text/javascript" src="../src/animated-clock.js" defer></script>
+</head>
+
+<body>
+    <!-- widget -->
+    <div animated-clock>
+
+        <div mark="t"></div>
+        <div mark="r"></div>
+        <div mark="b"></div>
+        <div mark="l"></div>
+
+        <div layer="hour">
+            <div class="cutaway t l"></div>
+            <div class="cutaway t r"></div>
+            <div class="cutaway b l"></div>
+            <div class="cutaway b r"></div>
+            <div class="cutaway c-1"></div>
+            <div class="cutaway c-2"></div>
+        </div>
+
+        <div layer="minute">
+            <div class="cutaway t l"></div>
+            <div class="cutaway t r"></div>
+            <div class="cutaway b l"></div>
+            <div class="cutaway b r"></div>
+            <div class="cutaway c-1"></div>
+            <div class="cutaway c-2"></div>
+            <div class="cutaway c-3"></div>
+        </div>
+
+        <div hand="second"></div>
+
+        <div washer>
+            <div class="nail"></div>
+        </div>
+    </div>
+</body>
+
+</html>

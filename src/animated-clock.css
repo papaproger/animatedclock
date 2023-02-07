@@ -1,0 +1,275 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*      Animated Clock Styles, version: 1.0, XX.02.2023      */
+/* Copyright © 2023 Sergey Shlyakhtin. All rights reserved.  */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* * * * * * * * * * * * CUSTOM STYLES * * * * * * * * * * * */
+
+/* widget size, position, etc.: */
+div[animated-clock] {
+    /* supposed to be same: */
+    width: 100vmin;
+    height: 100vmin;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    position: relative;
+    margin: calc(50vh - 50vmin) auto;
+
+    /*border: 1px solid white;*/
+    /*border-radius: 10px;*/
+    /*box-shadow: 0 0 5px white;*/
+}
+
+/* widget color: */
+div[animated-clock],
+div[animated-clock] div[washer]>.nail::after {
+    background-color: rgb(12, 12, 12);
+}
+
+/* main hands color: */
+div[animated-clock] div[layer] {
+    background-color: hsl(261, 44%, 50%);
+}
+
+/* second hand, washer and top mark color: */
+div[animated-clock] div[hand="second"],
+div[animated-clock] div[washer],
+div[animated-clock] div[mark="t"] {
+    background-color: yellow;
+}
+
+/* the other marks color: */
+div[animated-clock] div[mark]+div[mark],
+div[animated-clock] div[washer]>.nail::before {
+    background-color: hsl(0, 0%, 90%);
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* PIECES COMMON */
+
+div[animated-clock] div,
+div[animated-clock] div::before,
+div[animated-clock] div::after {
+    position: absolute;
+}
+
+/* LAYERS COMMON */
+
+div[animated-clock] div[layer] {
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    mix-blend-mode: difference;
+}
+
+div[animated-clock] div[layer]::before,
+div[animated-clock] div[layer]::after {
+    content: '';
+    width: 100%;
+    left: 0;
+    background-color: black;
+}
+
+div[animated-clock] div[layer]::after {
+    height: 46%;
+    bottom: 0;
+}
+
+/* HOUR LAYER */
+
+div[animated-clock] div[layer="hour"]::before {
+    height: 32%;
+    top: 0;
+}
+
+/* MINUTE LAYER */
+
+div[animated-clock] div[layer="minute"]::before {
+    height: 24%;
+    top: 0;
+}
+
+/* SECOND HAND */
+
+div[animated-clock] div[hand="second"] {
+    width: 1.8%;
+    height: 45%;
+    bottom: 44%;
+    left: 49.1%;
+    transform-origin: center 86.66658%;
+}
+
+/* WASHER */
+
+div[animated-clock] div[washer] {
+    width: 3%;
+    height: 3%;
+    top: 48.5%;
+    left: 48.5%;
+    border-radius: 50%;
+}
+
+/* NAIL */
+
+div[animated-clock] div[washer]>.nail {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+div[animated-clock] div[washer]>.nail::before,
+div[animated-clock] div[washer]>.nail::after {
+    content: '';
+    border-radius: 50%;
+}
+
+div[animated-clock] div[washer]>.nail::before {
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+}
+
+div[animated-clock] div[washer]>.nail::after {
+    width: 20%;
+    height: 20%;
+    top: 40%;
+    left: 40%;
+}
+
+/* MARKS COMMON */
+
+div[animated-clock] div[mark] {
+    width: 5%;
+    height: 5%;
+    border-radius: 50%;
+}
+
+/* MARKS */
+
+div[animated-clock] div[mark="t"] {
+    top: 11%;
+    left: 47.5%;
+}
+
+div[animated-clock] div[mark="r"] {
+    top: 47.5%;
+    right: 11%;
+}
+
+div[animated-clock] div[mark="b"] {
+    bottom: 11%;
+    left: 47.5%;
+}
+
+div[animated-clock] div[mark="l"] {
+    top: 47.5%;
+    left: 11%;
+}
+
+/* LAYER CUTAWAYS COMMON */
+
+div[animated-clock] div[layer]>.cutaway {
+    border-radius: 50%;
+    background-color: black;
+}
+
+/* HOUR LAYER CUTAWAYS */
+
+div[animated-clock] div[layer="hour"]>.cutaway.t {
+    width: 10%;
+    height: 10%;
+    top: 27%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.t.l {
+    left: 39.5%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.t.r {
+    right: 39.5%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.b {
+    width: 120%;
+    height: 120%;
+    bottom: -14%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.b.l {
+    left: -70.6%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.b.r {
+    right: -70.6%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.c-1 {
+    width: 4%;
+    height: 4%;
+    top: 35.6%;
+    left: 48%;
+}
+
+div[animated-clock] div[layer="hour"]>.cutaway.c-2 {
+    width: 1.8%;
+    height: 1.8%;
+    top: 41.51%;
+    left: 49.1%;
+}
+
+/* MINUTE LAYER CUTAWAYS */
+
+div[animated-clock] div[layer="minute"]>.cutaway.t {
+    width: 16%;
+    height: 16%;
+    top: 16%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.t.l {
+    left: 33.48%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.t.r {
+    right: 33.48%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.b {
+    width: 180%;
+    height: 180%;
+    bottom: -44%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.b.l {
+    left: -130.64%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.b.r {
+    right: -130.64%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.c-1 {
+    width: 5%;
+    height: 5%;
+    top: 29.12%;
+    left: 47.5%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.c-2 {
+    width: 2.4%;
+    height: 2.4%;
+    top: 36.41%;
+    left: 48.8%;
+}
+
+div[animated-clock] div[layer="minute"]>.cutaway.c-3 {
+    width: 0.9%;
+    height: 0.9%;
+    top: 41.98%;
+    left: 49.55%;
+}
