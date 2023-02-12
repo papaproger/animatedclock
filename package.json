@@ -1,16 +1,20 @@
 {
+  "homepage": "https://papaproger.github.io/animatedclock",
   "name": "animatedclock",
   "version": "1.0.0",
   "description": "Animated Clock - create your own custom animation!",
   "author": "Sergey Shlyakhtin",
   "private": true,
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "watch": "babel init -d src --plugins transform-object-rest-spread --presets env -w"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "gh-pages": "^5.0.0"
   }
 }
