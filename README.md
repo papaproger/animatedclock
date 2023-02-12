@@ -16,9 +16,8 @@ Have you been searching the net for a flexibly customizable clock widget for a l
 
 ### <a id="2">File Structure</a>
 
-- public:
+- docs:
     - [index.html][html]
-- src:
     - [animated-clock.css][css]
     - [animated-clock.js][js]
 - init:
@@ -83,7 +82,7 @@ Generally friendly with most browsers as long as *rotate*, *transform*, *transit
 [PapaProger](https://github.com/papaproger), first release on 12.02.2023. Copyright © 2023 [Sergey Shlyakhtin](https://www.linkedin.com/in/papaproger/). All rights reserved.
 
 [deployment]: https://papaproger.github.io/animatedclock/
-[html]: https://github.com/papaproger/animatedclock/blob/main/public/index.html
-[css]: https://github.com/papaproger/animatedclock/blob/main/src/animated-clock.css
-[js]: https://github.com/papaproger/animatedclock/blob/main/src/animated-clock.js
+[html]: https://github.com/papaproger/animatedclock/blob/main/docs/index.html
+[css]: https://github.com/papaproger/animatedclock/blob/main/docs/animated-clock.css
+[js]: https://github.com/papaproger/animatedclock/blob/main/docs/animated-clock.js
 [js_init]: https://github.com/papaproger/animatedclock/blob/main/init/animated-clock.js
