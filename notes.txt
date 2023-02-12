@@ -1,0 +1,4 @@
+animatedClock._currentAngles = getNextAngles(animatedClock._currentAngles, 0, 36328000)
+animatedClock._hands.hourLayer.style.transform = `rotate(${animatedClock._currentAngles.hAngle}deg)`
+animatedClock._hands.minuteLayer.style.transform = `rotate(${animatedClock._currentAngles.mAngle}deg)`
+animatedClock._hands.secondHand.style.transform = `rotate(${animatedClock._currentAngles.sAngle}deg)`

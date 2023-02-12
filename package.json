@@ -1,7 +1,7 @@
 {
   "name": "animatedclock",
   "version": "1.0.0",
-  "description": "Animated Clock by PapaProger",
+  "description": "Animated Clock - create your own custom animation!",
   "author": "Sergey Shlyakhtin",
   "private": true,
   "scripts": {

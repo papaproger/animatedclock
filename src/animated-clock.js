@@ -1,7 +1,7 @@
 'use strict';
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*      Animated Clock Script, version: 1.0, XX.02.2023      */
+/*      Animated Clock Script, version: 1.0, 12.02.2023      */
 /* Copyright © 2023 Sergey Shlyakhtin. All rights reserved.  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -12,8 +12,8 @@ var animatedClock = {
     // create any sequence of transitions:
     transitions: [{
         timings: {
-            delay: 0, // delay: 0,
-            duration: 5000
+            //delay: 0,
+            duration: 3000
         },
         extraRotationValues: {
             hValue: -1, // -360deg
@@ -52,7 +52,8 @@ var animatedClock = {
         hAngle: 0,
         mAngle: 0,
         sAngle: 0
-    }
+    },
+    _timezoneOffset: new Date().getTimezoneOffset()
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -105,17 +106,11 @@ var windHands = function windHands(clock) {
         delay = Math.abs(clock.transitions[step].timings.delay) || 0;
     }
 
-    if (step <= 0) delay += Date.now() - new Date().getTimezoneOffset() * 60000;
-
-    var extraRotationValues = clock.transitions[step].extraRotationValues || {
-        hValue: 0,
-        mValue: 0,
-        sValue: 0
-    };
+    if (step <= 0) delay += Date.now() - clock._timezoneOffset * 60000;
 
     clock._hands.hourLayer.style.transition = clock._hands.minuteLayer.style.transition = clock._hands.secondHand.style.transition = duration <= 0 ? 'none' : 'transform ' + duration + 'ms ease';
 
-    clock._currentAngles = getNextAngles(clock._currentAngles, duration, delay, extraRotationValues);
+    clock._currentAngles = getNextAngles(clock._currentAngles, duration, delay, clock.transitions[step].extraRotationValues);
 
     clock._hands.hourLayer.style.transform = 'rotate(' + clock._currentAngles.hAngle + 'deg)';
     clock._hands.minuteLayer.style.transform = 'rotate(' + clock._currentAngles.mAngle + 'deg)';
@@ -156,14 +151,15 @@ var transitionUnitFabric = function transitionUnitFabric(step, transitionUnitSho
     };
 };
 
-var start = function start(clock) {
+var startClock = function startClock(clock) {
 
     if (!clock || !clock._hands) return false;
 
     var transitionUnitShot = animateHands;
 
+    // KISS
     if (clock.transitions.length === 0) {
-        clock._currentAngles = getNextAngles(clock._currentAngles, 0, Date.now() - new Date().getTimezoneOffset() * 60000);
+        clock._currentAngles = getNextAngles(clock._currentAngles, 0, Date.now() - clock._timezoneOffset * 60000);
         transitionUnitShot(clock);
     } else {
         var startDelay = void 0;
@@ -190,5 +186,6 @@ window.addEventListener('load', function () {
         minuteLayer: document.querySelector('div[layer="minute"]'),
         secondHand: document.querySelector('div[hand="second"]')
     };
-    start(animatedClock);
+
+    startClock(animatedClock);
 });

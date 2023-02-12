@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*      Animated Clock Script, version: 1.0, XX.02.2023      */
+/*      Animated Clock Script, version: 1.0, 12.02.2023      */
 /* Copyright © 2023 Sergey Shlyakhtin. All rights reserved.  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -11,8 +11,8 @@ let animatedClock = {
     transitions: [
         {
             timings: {
-                delay: 0, // delay: 0,
-                duration: 5000,
+                //delay: 0,
+                duration: 3000,
             },
             extraRotationValues: {
                 hValue: -1, // -360deg
@@ -54,7 +54,8 @@ let animatedClock = {
         hAngle: 0,
         mAngle: 0,
         sAngle: 0
-    }
+    },
+    _timezoneOffset: new Date().getTimezoneOffset()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -108,13 +109,7 @@ const windHands = (clock, step = 0) => {
         delay = Math.abs(clock.transitions[step].timings.delay) || 0
     }
 
-    if (step <= 0) delay += Date.now() - (new Date().getTimezoneOffset()) * 60000
-
-    const extraRotationValues = clock.transitions[step].extraRotationValues || {
-        hValue: 0,
-        mValue: 0,
-        sValue: 0
-    }
+    if (step <= 0) delay += Date.now() - clock._timezoneOffset * 60000
 
     clock._hands.hourLayer.style.transition =
         clock._hands.minuteLayer.style.transition =
@@ -122,7 +117,7 @@ const windHands = (clock, step = 0) => {
             ? 'none'
             : `transform ${duration}ms ease`
 
-    clock._currentAngles = getNextAngles(clock._currentAngles, duration, delay, extraRotationValues)
+    clock._currentAngles = getNextAngles(clock._currentAngles, duration, delay, clock.transitions[step].extraRotationValues)
 
     clock._hands.hourLayer.style.transform = `rotate(${clock._currentAngles.hAngle}deg)`
     clock._hands.minuteLayer.style.transform = `rotate(${clock._currentAngles.mAngle}deg)`
@@ -169,14 +164,15 @@ const transitionUnitFabric = (step, transitionUnitShot) => {
     return (clock) => setTimeout(() => transitionUnitShot(clock), windHands(clock, step))
 }
 
-const start = (clock) => {
+const startClock = (clock) => {
 
     if (!clock || !clock._hands) return false
 
     let transitionUnitShot = animateHands
 
+    // KISS
     if (clock.transitions.length === 0) {
-        clock._currentAngles = getNextAngles(clock._currentAngles, 0, Date.now() - (new Date().getTimezoneOffset()) * 60000)
+        clock._currentAngles = getNextAngles(clock._currentAngles, 0, Date.now() - clock._timezoneOffset * 60000)
         transitionUnitShot(clock)
     } else {
         let startDelay
@@ -202,5 +198,6 @@ window.addEventListener('load', () => {
         minuteLayer: document.querySelector(`div[layer="minute"]`),
         secondHand: document.querySelector(`div[hand="second"]`)
     }
-    start(animatedClock)
+    
+    startClock(animatedClock)
 })

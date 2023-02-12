@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*      Animated Clock Styles, version: 1.0, XX.02.2023      */
+/*      Animated Clock Styles, version: 1.0, 12.02.2023      */
 /* Copyright © 2023 Sergey Shlyakhtin. All rights reserved.  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -26,25 +26,33 @@ div[animated-clock] {
 
 /* main hands color: */
 div[animated-clock] div[layer] {
-    background-color: hsl(261, 44%, 50%);
+    background-color: hsl(249, 80%, 67%);
 }
 
-/* second hand, washer and top mark color: */
+/* second hand and washer color: */
 div[animated-clock] div[hand="second"],
-div[animated-clock] div[washer],
+div[animated-clock] div[washer] {
+    background-color: hsl(0, 0%, 95%);
+}
+
+/* top mark color: */
 div[animated-clock] div[mark="t"] {
-    background-color: yellow;
+    background-color: hsl(0, 0%, 30%);
 }
 
 /* the other marks color: */
-div[animated-clock] div[mark]+div[mark],
+div[animated-clock] div[mark]+div[mark] {
+    background-color: hsl(0, 0%, 30%);
+}
+
+/* mid-washer color: */
 div[animated-clock] div[washer]>.nail::before {
-    background-color: hsl(0, 0%, 90%);
+    background-color: hsl(0, 0%, 14%);
 }
 
 /* nail color: */
 div[animated-clock] div[washer]>.nail::after {
-    background-color: rgb(12, 12, 12);
+    background-color: hsl(0, 0%, 95%);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -72,7 +80,7 @@ div[animated-clock] div[layer]::after {
     content: '';
     width: 100%;
     left: 0;
-    background-color: black;
+    background-color: hsl(0, 0%, 0%);
 }
 
 div[animated-clock] div[layer]::after {
@@ -177,7 +185,7 @@ div[animated-clock] div[mark="l"] {
 
 div[animated-clock] div[layer]>.cutaway {
     border-radius: 50%;
-    background-color: black;
+    background-color: hsl(0, 0%, 0%);
 }
 
 /* HOUR LAYER CUTAWAYS */
