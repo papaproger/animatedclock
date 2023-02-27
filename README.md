@@ -27,9 +27,9 @@ Have you been searching the net for a flexibly customizable clock widget for a l
 
 Unobtrusively designed and bestowed with a great mechanism for customizable animation at the same time, this smart widget can be swiftly integrated into your website html code. What you need is just [a pinch of tags][html], [a chunk of styles][css] and [a chop of functions][js] from above.
 
-['CUSTOM STYLES'][css] section is supposed to inspire you to try different colors and some extra styles to personalize your widget appearance.
+[Custom Styles][css] section is supposed to inspire you to try different colors and some extra styles to personalize your widget appearance.
 
-['CUSTOM PARAMS'][js] section, on the other hand, allows you to create your own sequence of transitions including **any number of transition units** like it is [shown][deployment] down below:
+[Custom Params][js] section, on the other hand, allows you to create your own sequence of transitions including **any number of transition units** as it is [shown][deployment] down below:
 
 ```javascript
 let animatedClock = {
@@ -69,11 +69,11 @@ let animatedClock = {
 }
 ```
 
-[Have a glance at what it looks like.][deployment]
+Have a glance at [the result][deployment] or open the project on <a href="https://codepen.io/papaproger/pen/RwYoJKo" target="_blank">codepen.io</a>.
 
 ### <a id="4">Browser Compatibility</a>
 
-Generally friendly with most browsers as long as *rotate*, *transform*, *transition*, *animation* and *mix-blend-mode* css properties are supported. Does not work in IE and Samsung Internet browsers.
+Generally friendly with most browsers as long as *rotate*, *transform*, *transition*, *animation* and *mix-blend-mode* css properties are supported. Does not work in IE (oddly enough).
 
 **Note** that it is not really the best way using css animation for moving hands in terms of time accuracy, but it does seem pretty decent as a particular way of embellishing your website.
 

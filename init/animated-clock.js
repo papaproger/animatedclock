@@ -159,10 +159,7 @@ const animateHands = (clock) => {
     })
 }
 
-const transitionUnitFabric = (step, transitionUnitShot) => {
-
-    return (clock) => setTimeout(() => transitionUnitShot(clock), windHands(clock, step))
-}
+const transitionUnitFabric = (step, transitionUnitShot) => (clock) => setTimeout(() => transitionUnitShot(clock), windHands(clock, step))
 
 const startClock = (clock) => {
 
@@ -181,9 +178,7 @@ const startClock = (clock) => {
         if (!clock.transitions[0].timings) startDelay = 0
         else startDelay = clock.transitions[0].timings.delay || 0
 
-        for (let i = clock.transitions.length - 1; i >= 0; i--) {
-            transitionUnitShot = transitionUnitFabric(i, transitionUnitShot)
-        }
+        for (let i = clock.transitions.length - 1; i >= 0; i--) transitionUnitShot = transitionUnitFabric(i, transitionUnitShot)
 
         setTimeout(() => transitionUnitShot(clock), startDelay)
     }
